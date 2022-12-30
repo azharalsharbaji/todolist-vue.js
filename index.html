@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List - Vue.js</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vidaloka&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class="particles-lib">
+        <div id="particles-js">
+            <script src="js/particles/particles.js"></script>
+            <script src="js/particles/app.js"></script>
+        </div>
+    </section>
+    <div id="todo-list" class="container-wrapper">
+
+        <div class="counteritems"> {{ tasks.length }} </div>
+
+        <h1 class="title">My Todo List</h1>
+        <p class="subtitle">
+            enter text to the input field to add items to your list
+        </p>
+        <form>
+            <input type="text" placeholder="Type Your Task" v-model="taskText">
+            <button @click.prevent="addTask" :disabled="!taskText" class="btn btn-add">
+                Add Task</button>
+            <button class="btn btn-del-all" @click.prevent="deleteAll" 
+            v-if="tasks.length > 1">Delete All</button>
+
+        </form>
+        <div class="tasks-list" v-for="(task , index) in tasks">
+            <div class="task-box" @click="task.done = !task.done" 
+            :style="{ 'text-decoration': task.done ? 'line-through' : '' }">
+                {{ index + 1 }}  -  {{ task.words }}
+            </div>
+            <span class="delete" @click="deleteTask(index)">Delete</span>
+        </div>
+    </div>
+
+
+
+    <script src="js/vue.js"></script>
+    <script>
+        var app = new Vue ({
+            el: "#todo-list",
+            data: {
+                tasks: [],
+                taskText: "",
+                count: 0,
+            },
+            methods: {
+                addTask: function () {
+                    //هي حالة التاسك ويجب ان تكون false 
+                    this.tasks.push({ words: this.taskText, done: false });
+                    this.taskText = "";
+                    
+                    this.count += 1;
+                    
+                    
+                    // if(!this.taskText)
+                    // { alert("Please Enter Value") }
+                },
+
+                deleteTask: function (index) {
+                    this.tasks.splice(index, 1)
+                    this.count -= 1;
+                },
+                deleteAll: function() {
+                    this.tasks = [];
+                    this.count = "0";
+                }
+            }
+        }); 
+    </script>
+
+</body>
+</html>
